@@ -9,7 +9,7 @@ require('dotenv').config()
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
+app.use(cors({ optionsSuccessStatus: 200 }));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
@@ -25,13 +25,13 @@ const isInvalidDate = (date) => date.toUTCString() === "Invalid Date"
 // your first API endpoint... 
 app.get("/api/:date", function (req, res) {
   let date = new Date(req.params.date)
-  
+
   if (isInvalidDate(date)) {
     date = new Date(+req.params.date)
   }
 
   if (isInvalidDate(date)) {
-    res.json({error : "Invalid Date" })
+    res.json({ error: "Invalid Date" })
     return;
   }
 
@@ -39,25 +39,14 @@ app.get("/api/:date", function (req, res) {
     unix: date.getTime(),
     utc: date.toUTCString()
   })
-
-  })
-
-  app.get("/api", (req, res) => {
-    res.json({
-      unix: new Date().getTime(),
-      utc: new Date().toUTCString()
-    })
-  })
-
-// work starts here
-// request to /api/:data
-app.get("/api/:date", (req, res) => {
-  console.log(req.params)
 })
 
-
-
-
+app.get("/api", (req, res) => {
+  res.json({
+    unix: new Date().getTime(),
+    utc: new Date().toUTCString()
+  })
+})
 
 
 // Listen on port set in environment variable or default to 3000
