@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 app.post('/api/shorturl', function(req, res) {
   const { url } = req.body
   
-  const dnsLookup = dns.lookup(new URL(url).hostname, async(err, address) => {
+  const dnsLookup = dns.lookup(urlParser.parse(url).hostname, async(err, address) => {
     if (!address) {
       res.json({error: "Invalid URL"})
     } else {
