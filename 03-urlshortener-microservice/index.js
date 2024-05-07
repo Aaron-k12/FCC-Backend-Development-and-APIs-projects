@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const { MongoClient } = require('mongodb')
 const dns = require('dns')
-const urlparser = require('url');
+const urlParser = require('url');
 
 
 const client = new MongoClient(process.env.MONGO_URI)
@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 app.post('/api/shorturl', function(req, res) {
   const { url } = req.body
   
-  const dnsLookup = dns.lookup(urlparser.parse(url).hostname, async(err, address) => {
+  const dnsLookup = dns.lookup(new URL(url).hostname, async(err, address) => {
     if (!address) {
       res.json({error: "Invalid URL"})
     } else {
@@ -50,7 +50,7 @@ app.post('/api/shorturl', function(req, res) {
 
 app.get('/api/shorturl/:short_url', async (req, res) => {
   const shortUrl = req.params.short_url
-  const urlDoc = await urls.findOne({ short_url: +shortUrl})
+  const urlDoc = await urls.findOne({ short_url: Number(shortUrl)})
   res.redirect(urlDoc.url)
 })
 
